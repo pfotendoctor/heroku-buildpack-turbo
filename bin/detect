@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+if [ -f "turbo.json" ]; then
+  // get the node version from turbo.json
+  node_version=$(cat turbo.json | jq -r '.node')
+  // get the major version from node_version
+  major=$(echo $node_version | cut -d '.' -f 1)
+  // get the plugin path
+  plugin="plugin/heroku-nodejs-plugin-node-${major}.tar.gz"
+  // if the plugin exists and the user has not opted out of including the plugin, copy it into the slug
+  if [[ -f "${plugin}" ]] && [[ -z "$HEROKU_SKIP_NODE_PLUGIN" ]]; then
+    mkdir -p "${build_dir}/.heroku/"
+    tar -xzf "${plugin}" -C "${build_dir}/.heroku/"
+  fi
+  exit 0
+fi
+exit 1
