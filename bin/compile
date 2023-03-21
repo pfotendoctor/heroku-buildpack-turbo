@@ -16,6 +16,7 @@ echo "-----> Installing Node.js"
 
 url=-https://nodejs.org/download/release/v16.19.1/node-v16.19.1-linux-arm64.tar.gz
 code=$(curl "$url" -L --silent --fail --retry 5 --retry-max-time 15 --retry-connrefused --connect-timeout 5 -o /tmp/node.tar.gz --write-out "%{http_code}")
+dir=$BUILD_DIR/.heroku/node
 
 if [ "$code" != "200" ]; then
   echo "Unable to download node: $code" && false
